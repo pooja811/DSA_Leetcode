@@ -1,6 +1,6 @@
 class Solution {
     public int countDistinctIntegers(int[] nums) {
-        Set<Integer> set = new HashSet<>();
+         Set<Integer> set = new HashSet<>(nums.length * 2);
         
         for (int num : nums) {
             set.add(num);
@@ -11,8 +11,8 @@ class Solution {
 
      private int reverse(int num) {
         int rev = 0;
-        while (num > 0) {
-            rev = rev * 10 + num % 10;
+        while (num != 0) {
+            rev = rev * 10 + (num % 10);
             num /= 10;
         }
         return rev;
