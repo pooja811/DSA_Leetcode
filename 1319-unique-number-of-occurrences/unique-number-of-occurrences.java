@@ -1,15 +1,15 @@
 class Solution {
     public boolean uniqueOccurrences(int[] arr) {
-        int [] ca = new int[2001];
-        for(int i : arr){
-            ca[i + 1000]++;
+          // Step 1: Count occurrences of each number
+        Map<Integer, Integer> countMap = new HashMap<>();
+        for (int num : arr) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
         }
-        Arrays.sort(ca);
-        for(int i=0;i<2000;i++){
-            if(ca[i]!=0 && ca[i]==ca[i+1]){
-                return false;
-            }
-        }
-        return true;
+
+        // Step 2: Store counts in a set to check uniqueness
+        Set<Integer> occurrenceSet = new HashSet<>(countMap.values());
+
+        // Step 3: Compare sizes
+        return countMap.size() == occurrenceSet.size();
     }
 }
