@@ -1,39 +1,60 @@
+import java.util.AbstractList;
+
 class Solution {
-    public List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> li=new ArrayList<>();
-        if(nums==null || nums.length<4){
-            return li;
-        }
-        Arrays.sort(nums);
-        for(int i=0;i<nums.length-3;i++){
-            if(i>0&&nums[i]==nums[i-1]){
-                continue;
+    public List<List<Integer>> fourSum(int[] arr, int target) {
+        if (arr.length < 4)
+            return Collections.emptyList();
+        return new AbstractList<List<Integer>>() {
+            List<List<Integer>> ans;
+
+            @Override
+            public int size() {
+                if (ans == null)
+                    ans = createList(arr, target);
+                return ans.size();
             }
-            for(int j=i+1;j<nums.length-2;j++){
-                if(j>i+1&&nums[j]==nums[j-1]){
+
+            @Override
+            public List<Integer> get(int index) {
+                if (ans == null)
+                    ans = createList(arr, target);
+                return ans.get(index);
+            }
+        };
+    }
+
+    private List<List<Integer>> createList(int[] arr, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Arrays.sort(arr);
+        int len = arr.length;
+        for (int i = 0; i < len - 3; i++) {
+            if (i > 0 && arr[i] == arr[i - 1])
+                continue;
+            for (int j = i + 1; j < len - 2; j++) {
+                if (j > i + 1 && arr[j] == arr[j - 1])
                     continue;
-                }
-                int left=j+1; int right=nums.length-1;
-                while(left<right){
-                    long sum=(long)nums[i]+nums[j]+nums[left]+nums[right];
-                    if(sum==target){
-                        li.add(Arrays.asList(nums[i],nums[j],nums[left],nums[right]));
-                        while(left<right&&nums[left]==nums[left+1]){
-                            left++;
-                        }
-                        while(left<right&&nums[right]==nums[right+-1]){
-                            right--;
-                        }
+                int left = j + 1;
+                int right = len - 1;
+                while (left < right) {
+                    long sum = (long) arr[i] + arr[j] + arr[left] + arr[right];
+                    if (sum == target) {
+                        ans.add(Arrays.asList(arr[i], arr[j], arr[left], arr[right]));
                         left++;
                         right--;
-                    }else if(sum<target){
+                        while (left < right && arr[left] == arr[left - 1])
+                            left++;
+                        while (left < right && arr[right] == arr[right + 1])
+                            right--;
+                    } else if (sum < target) {
                         left++;
-                    }else{
+                    } else {
                         right--;
                     }
+
                 }
+
             }
         }
-        return li;
+        return ans;
     }
 }
