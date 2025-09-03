@@ -1,27 +1,26 @@
 class Solution {
     public String multiply(String num1, String num2) {
-        if (num1.equals("0") || num2.equals("0")) return "0";
-
+        if ("0".equals(num1) || "0".equals(num2)) {
+            return "0";
+        }
         int m = num1.length(), n = num2.length();
-        int[] result = new int[m + n];
-
-        for (int i = m - 1; i >= 0; i--) {
-            int d1 = num1.charAt(i) - '0';
-            for (int j = n - 1; j >= 0; j--) {
-                int d2 = num2.charAt(j) - '0';
-                int sum = d1 * d2 + result[i + j + 1];
-
-                result[i + j + 1] = sum % 10;
-                result[i + j] += sum / 10;
+        int[] arr = new int[m + n];
+        for (int i = m - 1; i >= 0; --i) {
+            int a = num1.charAt(i) - '0';
+            for (int j = n - 1; j >= 0; --j) {
+                int b = num2.charAt(j) - '0';
+                arr[i + j + 1] += a * b;
             }
         }
-
-        StringBuilder sb = new StringBuilder();
-        for (int digit : result) {
-            if (sb.length() == 0 && digit == 0) continue;
-            sb.append(digit);
+        for (int i = arr.length - 1; i > 0; --i) {
+            arr[i - 1] += arr[i] / 10;
+            arr[i] %= 10;
         }
-
-        return sb.toString();
+        int i = arr[0] == 0 ? 1 : 0;
+        StringBuilder ans = new StringBuilder();
+        for (; i < arr.length; ++i) {
+            ans.append(arr[i]);
+        }
+        return ans.toString();
     }
 }
