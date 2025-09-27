@@ -1,13 +1,17 @@
 class Solution {
-    public int majorityElement(int[] nums) {
-        int n = nums.length;
-        for(int i=0;i<n;i++) {
-            int count = 1;
-            for(int j=i+1;j<n;j++) {
-                if(nums[i] == nums[j]) count++;
-            }
-            if(count > n/2) return nums[i];
-        }
-        return -1;
+    public static int majorityElement(int[] nums) {
+        return helper(nums,0,nums[0]);
+    }
+    
+    static int helper(int[] nums, int si, int ref){
+        int c=0;
+        for(int i=si;i<nums.length;i++){
+            if(nums[i]==ref)
+                c++;
+            else
+                c--;
+            if(c==-1)
+                return helper(nums,i,nums[i]);
+        }return ref;
     }
 }
