@@ -1,21 +1,33 @@
 class Solution {
-    List<String> ans = new ArrayList<>();
-    void backtrack(String s, String path, int index, int count) {
-        if (count > 4) return;
-        if (count == 4 && index >= s.length()) {
-            ans.add(path.substring(0,path.length()-1));
+    private int n;
+    private String s;
+    private List<String> ans = new ArrayList<>();
+    private List<String> t = new ArrayList<>();
+
+    public List<String> restoreIpAddresses(String s) {
+        n = s.length();
+        this.s = s;
+        dfs(0);
+        return ans;
+    }
+
+    private void dfs(int i) {
+        if (i >= n && t.size() == 4) {
+            ans.add(String.join(".", t));
             return;
         }
-        for (int i = 1; i <= 3 && index + i <= s.length(); i++) {
-            String num = s.substring(index, index + i);
-            if (num.charAt(0) == '0' && i != 1) break;
-            else if (Integer.parseInt(num) <= 255) {
-                backtrack(s, path + s.substring(index, index + i) + ".", index + i,count + 1);
+        if (i >= n || t.size() >= 4) {
+            return;
+        }
+        int x = 0;
+        for (int j = i; j < Math.min(i + 3, n); ++j) {
+            x = x * 10 + s.charAt(j) - '0';
+            if (x > 255 || (s.charAt(i) == '0' && i != j)) {
+                break;
             }
+            t.add(s.substring(i, j + 1));
+            dfs(j + 1);
+            t.remove(t.size() - 1);
         }
     }
-    public List<String> restoreIpAddresses(String s) {
-        backtrack(s, "", 0, 0);
-        return ans;
-    } 
 }
