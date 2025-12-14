@@ -1,0 +1,35 @@
+class Solution {
+    public String reorderSpaces(String text) {
+        int spaceCount = 0;
+        String[] words = text.trim().split("\\s+");
+        int wordCount = words.length;
+
+        StringBuilder sb = new StringBuilder();
+
+        for (char ch : text.toCharArray()) {
+            if (ch == ' ') {
+                spaceCount++;
+            }
+        }
+
+        if (spaceCount == 0) {
+            return text;
+        }
+
+        int newSpace = wordCount == 1 ? spaceCount : spaceCount / (wordCount - 1);
+
+        for (String w : words) {
+            sb.append(w);
+            if (spaceCount >= newSpace) {
+                sb.append(" ".repeat(newSpace));
+                spaceCount -= newSpace;
+            }
+        }
+
+        if (spaceCount > 0) {
+            sb.append(" ".repeat(spaceCount));
+        }
+
+        return sb.toString();
+    }
+}
