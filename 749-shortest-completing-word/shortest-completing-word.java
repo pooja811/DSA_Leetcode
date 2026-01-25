@@ -1,39 +1,36 @@
 class Solution {
     public String shortestCompletingWord(String licensePlate, String[] words) {
-        String str = licensePlate.replaceAll("[^A-Za-z]","").toLowerCase();
-        Map<Character,Integer> map = new HashMap<>();
+        int[] target = new int[26];
 
-        for(char ch : str.toCharArray()) {
-            map.put(ch, map.getOrDefault(ch,0)+1);
+        // Count letters in licensePlate
+        for (char c : licensePlate.toCharArray()) {
+            if (Character.isLetter(c)) {
+                target[Character.toLowerCase(c) - 'a']++;
+            }
         }
 
-        String shortest = null;
-        for(String word : words) {
-            Map<Character, Integer> wordMap = new HashMap<>();
-            for(char ch : word.toLowerCase().toCharArray()) 
-            {
-                wordMap.put(ch, wordMap.getOrDefault(ch,0)+1);
-            }
+        String result = null;
 
-            boolean valid = true;
-            for(Map.Entry<Character,Integer> entry : map.entrySet()) 
-            {
-                char key = entry.getKey();
-                int count = entry.getValue();
-
-                if(wordMap.getOrDefault(key,0) < count) 
-                {  
-                    valid = false;
-                    break;
+        for (String word : words) {
+            if (matches(word, target)) {
+                if (result == null || word.length() < result.length()) {
+                    result = word;
                 }
             }
-
-            if(valid && (shortest == null || word.length() < shortest.length())) 
-            {
-                shortest = word;
-            }
         }
 
-        return shortest;
+        return result;
+    }
+
+    private boolean matches(String word, int[] target) {
+        int[] count = new int[26];
+        for (char c : word.toCharArray()) {
+            count[c - 'a']++;
+        }
+
+        for (int i = 0; i < 26; i++) {
+            if (count[i] < target[i]) return false;
+        }
+        return true;
     }
 }
