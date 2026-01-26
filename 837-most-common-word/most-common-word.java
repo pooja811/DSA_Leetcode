@@ -1,26 +1,42 @@
+
 class Solution {
     public String mostCommonWord(String paragraph, String[] banned) {
-        paragraph = paragraph.replaceAll("[^a-zA-Z]", " ").toLowerCase();
-        String para[] = paragraph.split("\\s+");
-        String res = "";
-        Map<String, Integer> map = new HashMap<>();
-        Set<String> set = new HashSet<>();
-        for(String b : banned){
-            set.add(b);
+        Map <String, Integer> wordsMap = new HashMap();
+        for (String bannedWord: banned) {
+            wordsMap.put(bannedWord, -1);
         }
-        for(String s : para){
-            if(!set.contains(s)){
-                map.put(s, map.getOrDefault(s,0)+1);
+        var currentWord = new StringBuilder();
+        String mostCommon = null;
+        int mostCommonCount = -1;
+        var chars = paragraph.toCharArray();
+
+        for (int i=0; i < chars.length; i ++) {
+            var curChar = Character.toLowerCase(chars[i]);
+            if (Character.isLetter(curChar)) {
+                currentWord.append(Character.toLowerCase(curChar));
+                if (i + 1 < chars.length)
+                    continue;
             }
-        }
-        int max = 0;
-        for(String k : map.keySet()){
-            if(map.get(k) > max){
-                max = map.get(k);
-                res = k;
+
+            if(currentWord.length() == 0) {
+                continue;
             }
+            String word = currentWord.toString();
+            currentWord = new StringBuilder();
+            if (word.isEmpty()) {
+                continue;
+            }
+            int count = wordsMap.getOrDefault(word, 0);
+            if (count == -1) {
+                continue;
+            }
+            count++;
+            if (count > mostCommonCount) {
+                mostCommonCount = count;
+                mostCommon = word;
+            } 
+            wordsMap.put(word, count);
         }
-        //System.out.print(map);
-        return res;
-    }
+        return mostCommon;
+     }
 }
