@@ -1,0 +1,15 @@
+class Solution {
+    public int minimumDeletions(String s) {
+        int n = s.length();
+        int minDelete = 0;
+        int bcnt = 0;
+        for(int i=0; i<n; i++){
+            if(s.charAt(i)=='b'){
+                bcnt++;
+            }else{
+                minDelete= Math.min(minDelete+1, bcnt);
+            }
+        }
+        return minDelete;
+    }
+}
