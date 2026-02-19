@@ -1,22 +1,22 @@
 class Solution {
-    static {
-        for (int i = 0; i < 500; i++) {
-            countBinarySubstrings("1100");
-        }
-    }
+    public int countBinarySubstrings(String s) {
+       int n = s.length();
+       int curr = 1;
+       int prev = 0;
+       int sum=0;
 
-    public static int countBinarySubstrings(String s) {
-        int prev = 0, cur_cnt = 1, ans = 0;
-
-        for (int i = 1; i < s.length(); i++) {
-            if (s.charAt(i) == s.charAt(i - 1))//Same char so increase consecutive count
-                cur_cnt++;
-            else {
-                ans += Math.min(cur_cnt, prev); //Store answer ie..minium of cur & prev
-                prev = cur_cnt; //Current value will become prev for new different character
-                cur_cnt = 1; //Current count will start will 1
+       for(int i=1; i<n; i++){
+            if(s.charAt(i)==s.charAt(i-1)){
+                curr++;
+            }else{
+               sum += Math.min(curr,prev);
+               prev = curr; 
+               curr=1;
             }
-        }
-        return ans + Math.min(prev, cur_cnt);
+
+       }
+       sum += Math.min(curr,prev);
+
+       return sum; 
     }
 }
