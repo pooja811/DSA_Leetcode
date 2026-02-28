@@ -1,15 +1,11 @@
 class Solution {
-  public int concatenatedBinary(int n) {
-    final int MOD = 1_000_000_007;
-    long ans = 0;
-
-    for (int i = 1; i <= n; ++i)
-      ans = ((ans << numberOfBits(i)) % MOD + i) % MOD;
-
-    return (int) ans;
-  }
-
-  private int numberOfBits(int n) {
-    return (int) (Math.log(n) / Math.log(2)) + 1;
-  }
+    public int concatenatedBinary(int n) {
+        int mod = (int)1e9 + 7;
+        long res = 0;
+        for(int i=1; i<=n; i++) {
+            int digits = 32 - Integer.numberOfLeadingZeros(i);
+            res = ((((res << digits)%mod)+i)%mod);
+        }
+        return (int)res;
+    }
 }
