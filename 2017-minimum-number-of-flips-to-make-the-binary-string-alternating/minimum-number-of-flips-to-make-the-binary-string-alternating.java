@@ -3,26 +3,24 @@ class Solution {
         int n = s.length();
         String t = s + s;
 
-        int diff1 = 0, diff2 = 0;
-        int ans = Integer.MAX_VALUE;
+        int ans = n;
+        int mis0 = 0;
 
-        for (int i = 0; i < 2 * n; i++) {
-            char expect1 = (i % 2 == 0) ? '0' : '1'; // 0101...
-            char expect2 = (i % 2 == 0) ? '1' : '0'; // 1010...
+        for(int i = 0; i < 2*n; i++){
 
-            if (t.charAt(i) != expect1) diff1++;
-            if (t.charAt(i) != expect2) diff2++;
+            char expected = (i % 2 == 0) ? '0' : '1';
 
-            if (i >= n) {
-                char oldExpect1 = ((i - n) % 2 == 0) ? '0' : '1';
-                char oldExpect2 = ((i - n) % 2 == 0) ? '1' : '0';
+            if(t.charAt(i) != expected) mis0++;
 
-                if (t.charAt(i - n) != oldExpect1) diff1--;
-                if (t.charAt(i - n) != oldExpect2) diff2--;
+            if(i >= n){
+                int left = i - n;
+                char expLeft = (left % 2 == 0) ? '0' : '1';
+                if(t.charAt(left) != expLeft) mis0--;
             }
 
-            if (i >= n - 1) {
-                ans = Math.min(ans, Math.min(diff1, diff2));
+            if(i >= n - 1){
+                int mis1 = n - mis0;
+                ans = Math.min(ans, Math.min(mis0, mis1));
             }
         }
 
